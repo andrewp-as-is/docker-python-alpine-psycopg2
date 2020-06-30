@@ -1,6 +1,10 @@
 # https://hub.docker.com/_/python
-all:
-	sudo docker login --username andrewpasis
+SSH_HOSTNAME:=aws
+DOCKER_NAME:=andrewpasis/python:3.8-alpine-psycopg2
 
-	sudo docker build -t andrewpasis/python:3.8-alpine-psycopg2 .
-	sudo docker push andrewpasis/python:3.8-alpine-psycopg2
+all:
+	scp Dockerfile $(SSH_HOSTNAME):Dockerfile
+	# sudo docker login --username andrewpasis
+
+	ssh $(SSH_HOSTNAME) sudo docker build -t $(DOCKER_NAME) .
+	ssh $(SSH_HOSTNAME) sudo docker push $(DOCKER_NAME)
